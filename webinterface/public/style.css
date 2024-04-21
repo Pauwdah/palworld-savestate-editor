@@ -1,0 +1,150 @@
+/* Reset some basic elements */
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure,
+figcaption {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Basic styling */
+body {
+  font-family: "Arial", sans-serif; /* You can change the font family */
+  line-height: 1.6;
+  font-size: 16px; /* Default text size */
+  color: #333; /* Default text color */
+  background-color: #f4f4f4; /* Background color of the body */
+  margin: 0;
+  padding: 20px;
+}
+
+/* Header Styles */
+h1,
+h2,
+h3 {
+  color: #444;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2em; /* 32px */
+}
+
+h2 {
+  font-size: 1.5em; /* 24px */
+}
+
+h3 {
+  font-size: 1.17em; /* 18.72px */
+}
+
+/* Link Styles */
+a {
+  color: #0654ba;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Button Styles */
+button,
+input[type="submit"],
+input[type="button"] {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1em;
+  border-radius: 5px; /* Rounded corners */
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+  background-color: #0056b3;
+}
+
+/* Form Element Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  display: block;
+  width: 100%;
+  box-sizing: border-box; /* Includes padding and border in the element's width and height */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  resize: vertical; /* Allows vertical resize only */
+}
+
+/* Utility Classes for Margin and Padding */
+.mt-1 {
+  margin-top: 5px;
+}
+.mt-2 {
+  margin-top: 10px;
+}
+.mt-3 {
+  margin-top: 15px;
+}
+.mb-1 {
+  margin-bottom: 5px;
+}
+.mb-2 {
+  margin-bottom: 10px;
+}
+.mb-3 {
+  margin-bottom: 15px;
+}
+
+/* Responsive Design: Breakpoints for mobile and tablet */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.25em;
+  }
+
+  button,
+  input[type="submit"],
+  input[type="button"] {
+    padding: 8px 16px;
+    font-size: 0.9em;
+  }
+}
+.status-positive {
+  color: green;
+  margin: 10px 0;
+}
+.status-negative {
+  color: red;
+  margin: 10px 0;
+}
