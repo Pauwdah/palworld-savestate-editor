@@ -1,26 +1,12 @@
-# palworld savestate editor
-
-# _Not usable yet_
-
-Editor that builds on palworld save tools for simple editing of savefiles.
-
-## Instructions
-
-Open the `start_webinterface.bat` to open the App.
-
-> [!CAUTION]
-> Don't close the command promt that opens with it, or you end the whole software.
-
 # palworld-save-tools
-
 Tools for converting Palworld .sav files to JSON and back.
 
 This tool currently supports additional parsing of the following data in the `Level.sav` not handled by `uesave` or other non-Palworld aware Unreal save editors, emcompassing almost all known data structures as of Palworld v0.1.4.0:
 
 1. `GroupSaveDataMap`
-   - Groups such as in-game organizations and guilds
+    - Groups such as in-game organizations and guilds
 1. `CharacterSaveParameterMap`
-   - Characters such as players and pals
+    - Characters such as players and pals
 1. `MapObjectSaveData`
 1. `ItemContainerSaveData`
 1. `CharacterContainerSaveData`
@@ -37,7 +23,7 @@ This tool currently supports additional parsing of the following data in the `Le
 ### Prerequisites
 
 1. Python 3.9 or newer.
-   - Windows users: You can install [Python 3.12 from the Microsoft Store](https://apps.microsoft.com/detail/9NCVDN91XZQP) or from [python.org](https://www.python.org/)
+    - Windows users: You can install [Python 3.12 from the Microsoft Store](https://apps.microsoft.com/detail/9NCVDN91XZQP) or from [python.org](https://www.python.org/)
 
 ### Windows GUI steps
 
@@ -69,8 +55,8 @@ Additional command line arguments:
 1. `--minify-json`: Minify output JSON to help speed up processing by other tools consuming JSON
 1. `--force`: Overwrite output files if they exist without prompting
 1. `--custom-properties`: Comma-separated list of paths from [paltypes.py](./palworld_save_tools/paltypes.py) to decode.
-   This can be used to ignore processing of types that are not of interest.
-   For example `--custom-properties .worldSaveData.GroupSaveDataMap,.worldSaveData.CharacterSaveParameterMap.Value.RawData` will only parse guild data and character data.
+This can be used to ignore processing of types that are not of interest.
+For example `--custom-properties .worldSaveData.GroupSaveDataMap,.worldSaveData.CharacterSaveParameterMap.Value.RawData` will only parse guild data and character data.
 
 ## Developers
 
@@ -91,7 +77,7 @@ pip install palworld-save-tools
 ## Development philosophy
 
 - No additional dependencies. Scripts should run with a default install of Python. Distributing binary builds of Python is laden with AV false positives.
-  - Optional dependencies are allowed, for example switching out the stdlib's JSON library for something more performant.
+    - Optional dependencies are allowed, for example switching out the stdlib's JSON library for something more performant.
 - Correctness of the conversion process is more important than performance. SAV > JSON > SAV should yield bit-for-bit identical files (pre-compression).
 
 ## Projects that make use of palworld-save-tools

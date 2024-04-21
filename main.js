@@ -1,5 +1,6 @@
 const { app, BrowserWindow, dialog, ipcMain } = require("electron");
 const { fork } = require("child_process");
+const axios = require("axios"); // Import axios
 
 const path = require("path");
 const fs = require("fs");
@@ -78,16 +79,27 @@ ipcMain.on("select-server-directory", (event, arg) => {
 });
 
 //CLIENT
+
 ipcMain.on("select-client-directory", (event, arg) => {
   dialog
     .showOpenDialog(mainWindow, {
-      // Ensure you pass the mainWindow as parent
       properties: ["openDirectory"],
     })
     .then((result) => {
-      if (!result.canceled) {
+      if (!result.canceled && result.filePaths.length > 0) {
         console.log("Client directory selected:", result.filePaths[0]);
-        event.sender.send("client-directory-selected", result.filePaths[0]);
+        // Send the path to the server
+        axios
+          .post("http://localhost:3000/api/client-directory-exists", {
+            path: result.filePaths[0],
+          })
+          .then((response) => {
+            console.log("Server response:", response.data);
+          })
+          .catch((error) => {
+            console.error("Error sending path to server:", error);
+          });
+        mainWindow.webContents.reload();
       }
     })
     .catch((err) => {

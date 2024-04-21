@@ -9,12 +9,20 @@
   <body>
     <h1>Palworld Savestate Editor</h1>
     <h3>Paths</h3>
-    <h4>Client World Path</h4>
+    <h4>Client Save Path</h4>
     <div id="clientPathStatus"></div>
     <button id="selectClientDir">Select Client Directory</button>
-    <h4>Server World Path</h4>
+    <select name="clientSavestateFolders" id="clientSavestateFolders">
+      <option value="default">No Savestates Found</option>
+    </select>
+
+    <h4>Server Save Path</h4>
     <div id="serverPathStatus"></div>
     <button id="selectServerDir">Select Server Directory</button>
+    <select name="serverSavestateFolders" id="serverSavestateFolders">
+      <option value="default">No Savestates Found</option>
+    </select>
+
     <script src="renderer.js"></script>
   </body>
 </html>
