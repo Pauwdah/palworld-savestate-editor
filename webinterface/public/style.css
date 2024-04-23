@@ -16,7 +16,7 @@ figcaption {
 /* Basic styling */
 body {
   font-family: "Arial", sans-serif; /* You can change the font family */
-  line-height: 1.6;
+  line-height: 0;
   font-size: 16px; /* Default text size */
   color: #333; /* Default text color */
   background-color: #f4f4f4; /* Background color of the body */
@@ -28,20 +28,44 @@ body {
 h1,
 h2,
 h3 {
-  color: #444;
+  color: #333;
   margin-bottom: 20px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #444;
+  margin-bottom: 10px;
 }
 
 h1 {
   font-size: 2em; /* 32px */
+  line-height: 1.6;
 }
 
 h2 {
   font-size: 1.5em; /* 24px */
+  line-height: 1;
 }
 
 h3 {
   font-size: 1.17em; /* 18.72px */
+  line-height: 0.5;
+}
+h4 {
+  font-size: 1em; /* 16px */
+  line-height: 0.5;
+}
+h5 {
+  font-size: 0.83em; /* 13.28px */
+  line-height: 0.5;
+}
+h6 {
+  font-size: 0.67em; /* 10.72px */
+  line-height: 0.5;
 }
 
 /* Link Styles */
@@ -79,8 +103,7 @@ input[type="email"],
 input[type="password"],
 select {
   padding: 10px;
-  margin-top: 5px;
-  margin-bottom: 20px;
+  margin: 0;
   display: block;
   width: 100%;
   box-sizing: border-box; /* Includes padding and border in the element's width and height */
@@ -140,6 +163,22 @@ textarea {
     font-size: 0.9em;
   }
 }
+#contentContainer {
+  display: flex;
+  justify-content: space-between; /* Ensures that any extra space is distributed between or around the items */
+  align-items: start; /* Aligns items to the top */
+}
+
+#directorySelectionSection {
+  flex: 35%; /* This section will take up 30% of the total width */
+  padding: 20px; /* Optional: Adds some space inside this section */
+}
+
+#worldEditorSection {
+  flex: 65%; /* This section will take up 70% of the total width */
+  padding: 20px; /* Optional: Adds some space inside this section */
+}
+
 .status-positive {
   color: green;
   margin: 10px 0;
@@ -147,4 +186,12 @@ textarea {
 .status-negative {
   color: red;
   margin: 10px 0;
+}
+.select-confirm-div {
+  display: flex;
+  align-items: center;
+}
+.status-icon {
+  margin-right: 10px;
+  margin-left: 10px;
 }
