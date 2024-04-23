@@ -83,6 +83,8 @@ button,
 input[type="submit"],
 input[type="button"] {
   background-color: #007bff;
+  width: 100%;
+  margin: 0.2em;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -106,6 +108,7 @@ select {
   margin: 0;
   display: block;
   width: 100%;
+  min-width: 20em;
   box-sizing: border-box; /* Includes padding and border in the element's width and height */
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -187,7 +190,7 @@ textarea {
   color: red;
   margin: 10px 0;
 }
-.select-confirm-div {
+.flex-box {
   display: flex;
   align-items: center;
 }

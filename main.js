@@ -98,6 +98,7 @@ ipcMain.on("select-steam-directory", (event) => {
         console.log(consoleName, "Attempting to send path to server...");
         handleSteamDir(result.filePaths[0], "/api/steam-directory-path")
           .then((users) => {
+            // Send back to the renderer
             users = JSON.stringify(users);
             event.reply("steam-users", users);
             event.reply("steam-user-status", true);
@@ -118,6 +119,7 @@ ipcMain.on("select-steam-directory", (event) => {
       event.reply("steam-user-status", false);
     });
 });
+
 ipcMain.on("select-steam-user", (event, selectedUser) => {
   console.log(consoleName, "Sending User: ", selectedUser);
 

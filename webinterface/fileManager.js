@@ -19,174 +19,52 @@ const steamIdUtils = require("./steamUtils");
 
 let clientWorldPath = "";
 let palServerWorldsPath = "";
+let palServerWorldsPathArray = [];
+let palServerWorldMatrix = [];
 
+///////////////////////////////////////////////////
+
+// Console
+
+///////////////////////////////////////////////////
+const consoleName = "\x1b[38;5;219m  File Manager: \x1b[0m";
+function consoleErrorPrint(error) {
+  console.error(consoleName, "\x1b[31m", error, "\x1b[0m");
+}
 ///////////////////////////////////////////////////
 
 // CLIENT FILE MANAGEMENT
 
 ///////////////////////////////////////////////////
 
-function setClientWorldPath(newPath) {
-  clientWorldPath = newPath;
-}
-function getClientWorldPath() {
-  return clientWorldPath;
-}
-
-function checkClientWorldFolders(callback) {
-  if (!clientWorldPath) {
-    clientWorldPath = clientDefaultWorldPath;
-  }
-  originalFs.readdir(
-    clientWorldPath,
-    { withFileTypes: true },
-    (err, entries) => {
-      if (err) {
-        return callback(err);
-      }
-
-      const steamIdDir = entries.find(
-        (entry) =>
-          entry.isDirectory() && steamIdUtils.isSteamIdFolder(entry.name)
-      );
-      if (!steamIdDir) {
-        return callback(
-          { customError: "NoSteamID", message: "No Steam ID directory found" },
-          false
-        );
-      }
-
-      const steamIdPath = path.join(clientWorldPath, steamIdDir.name);
-      originalFs.readdir(steamIdPath, { withFileTypes: true }, (err, files) => {
-        if (err) {
-          return callback(err, false);
-        }
-        const worldFolders = files
-          .filter((file) => file.isDirectory())
-          .map((folder) => folder.name);
-        callback(null, worldFolders);
-      });
-    }
-  );
-}
-
-function doesClientDirectoryExist(callback) {
-  if (!clientWorldPath) {
-    clientWorldPath = clientDefaultWorldPath;
-  }
-  originalFs.stat(clientWorldPath, (err, stats) => {
-    if (err) {
-      if (err.code === "ENOENT") {
-        callback(null, false);
-      } else {
-        callback(err, null);
-      }
-    } else {
-      callback(null, stats.isDirectory());
-    }
-  });
-}
-async function getClientDirectorySaveFolders() {
-  if (!clientWorldPath) {
-    clientWorldPath = clientDefaultWorldPath;
-  }
-
-  try {
-    const entries = await originalFs.promises.readdir(clientWorldPath, {
-      withFileTypes: true,
-    });
-    const folders = entries
-      .filter((file) => file.isDirectory())
-      .map((dir) => path.join(clientWorldPath, dir.name));
-    return folders;
-  } catch (error) {
-    // console.error("Failed to get client subfolders:", error);
-    return []; // Return an empty array to safely handle downstream expectations
-  }
-}
-
 ///////////////////////////////////////////////////
 
 // SERVER FILE MANAGEMENT
 
 ///////////////////////////////////////////////////
-function setPalServerWorldsPath(steamPath, steamId) {
+function setPalServerWorldsPath(steamPath) {
   const newPath =
-    steamPath +
-    "\\steamapps\\common\\PalServer\\Pal\\Saved\\SaveGames\\0\\" +
-    steamId;
+    steamPath + "\\steamapps\\common\\PalServer\\Pal\\Saved\\SaveGames\\0\\";
   console.log("PalServerWorldsPath:", newPath);
   palServerWorldsPath = newPath;
 }
-function getServerWorldPath() {
+function getPalServerWorldPath() {
   return palServerWorldsPath;
 }
-function checkServerWorldFolders(callback) {
-  //if serverWorldPath is not set, set it to the default path
-  if (!palServerWorldsPath) {
-    palServerWorldsPath = serverDefaultWorldPath;
-  }
 
-  originalFs.readdir(
+async function getPalServerWorldMatrix() {
+  palServerWorldsPathArray = await getPathsOfFileInFirstLevelDirs(
     palServerWorldsPath,
-    { withFileTypes: true },
-    (err, entries) => {
-      if (err) {
-        return callback(err);
-      }
-      const worldFolders = entries
-        .filter((entry) => entry.isDirectory())
-        .map((folder) => folder.name);
-      callback(null, worldFolders);
-    }
+    "LevelMeta.sav"
   );
-}
-
-function doesServerDirectoryExist(callback) {
-  if (!palServerWorldsPath) {
-    palServerWorldsPath = serverDefaultWorldPath;
-  }
-  originalFs.stat(palServerWorldsPath, (err, stats) => {
-    if (err) {
-      if (err.code === "ENOENT") {
-        callback(null, false);
-      } else {
-        callback(err, null);
-      }
-    } else {
-      callback(null, stats.isDirectory());
-    }
-  });
-}
-async function getServerDirectorySaveFolders() {
-  try {
-    if (!palServerWorldsPath) {
-      palServerWorldsPath = serverDefaultWorldPath;
-    }
-
-    // Read the directory and get subfolders
-    const subfolderPaths = await new Promise((resolve, reject) => {
-      originalFs.readdir(
-        palServerWorldsPath,
-        { withFileTypes: true },
-        (err, files) => {
-          if (err) {
-            reject(err);
-          } else {
-            const folders = files
-              .filter((file) => file.isDirectory())
-              .map((dir) => path.join(palServerWorldsPath, dir.name));
-            resolve(folders);
-          }
-        }
-      );
-    });
-
-    return subfolderPaths; // Return the array of subfolder paths
-  } catch (error) {
-    // console.error("Failed to get subfolders:", error);
-    return []; // Return an empty array in case of an error
-  }
+  console.log(
+    consoleName,
+    "palServerWorldsPathArray:",
+    palServerWorldsPathArray
+  );
+  palServerWorldMatrix = await solveLevelMeta(palServerWorldsPathArray);
+  console.log(consoleName, "palServerWorldMatrix:", palServerWorldMatrix);
+  return palServerWorldMatrix;
 }
 
 ///////////////////////////////////////////////////
@@ -225,20 +103,28 @@ function getPathsOfFileInFirstLevelDirs(directoryPath, fileName) {
     console.log("\x1b[32m", fileName, "(s) found.", "\x1b[0m");
     return pathsWithFile;
   } else {
-    console.log("\x1b[31m", "No such file in ", directoryPath, "\x1b[0m");
-    return false;
+    console.log("\x1b[31m", "No file or dir found", "\x1b[0m");
+    return [];
   }
 }
+
 async function solveLevelMeta(pathArray) {
   let worldMatrix = [];
-
-  // Convert LevelMeta.sav to LevelMeta.sav.json for all paths first
-  for (const path of pathArray) {
-    const levelMetaPath = path + "\\LevelMeta.sav";
-    await palworldSaveToolsConvert(levelMetaPath); // Assuming this can be promisified or is already async
+  if (pathArray.length === 0) {
+    console.log("No paths found.");
+    return [];
   }
 
-  // Read and parse the JSON files
+  // Convert all files first
+  const conversionPromises = pathArray.map((path) => {
+    const levelMetaPath = path + "\\LevelMeta.sav";
+    return ConvertSavJson(levelMetaPath);
+  });
+
+  // Wait for all conversions to complete
+  await Promise.all(conversionPromises);
+
+  // Now proceed with reading and parsing JSON files
   for (const path of pathArray) {
     const levelMetaJSONPath = path + "\\LevelMeta.sav.json";
     try {
@@ -247,78 +133,108 @@ async function solveLevelMeta(pathArray) {
       const worldName = json.properties.SaveData.value.WorldName.value;
       worldMatrix.push([path, worldName]);
     } catch (err) {
-      console.error(err);
+      console.error(`Error reading or parsing JSON: ${err}`);
     }
   }
 
   return worldMatrix;
 }
 
-function listFiles(directoryPath, callback) {
-  originalFs.readdir(directoryPath, (err, files) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, files);
-    }
-  });
-}
-
-function readFile(filePath, callback) {
-  originalFs.readFile(filePath, "utf8", (err, data) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, data);
-    }
-  });
-}
-function palworldSaveToolsConvert(filePath) {
-  // Check if the file exists before attempting to execute the script
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      // console.error(
-      //   "\x1b[33m",
-      //   `File not found: ${filePath}`,
-      //   " skipping...",
-      //   "\x1b[0m"
-      // );
-      return; // Exit if the file does not exist
-    }
-
-    // File exists, proceed to execute the command
-    const command = `python palworld_save_tools/convert.py "${filePath}"`;
-
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        // console.error(`Error: ${error.message}`);
-        return;
+function ConvertSavJson(filePath) {
+  return new Promise((resolve, reject) => {
+    console.log(consoleName, `Attempting to access file: ${filePath}`);
+    fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(consoleName, `File not found: ${filePath}, skipping...`);
+        return resolve(); // Resolve to avoid blocking other operations
       }
-      if (stderr) {
-        // console.error(`Stderr: ${stderr}`);
-        return;
-      }
-      // console.log(`Output: ${stdout}`);
+
+      const command = `python palworld_save_tools/convert.py "${filePath}"`;
+      console.log(consoleName, `Executing command: ${command}`);
+      exec(command, (error, stdout, stderr) => {
+        if (error) {
+          console.error(
+            consoleName,
+            `Error executing conversion: ${error.message}`
+          );
+          return reject(error);
+        }
+        if (stderr) {
+          console.error(consoleName, `Conversion stderr: ${stderr}`);
+          return reject(new Error(stderr));
+        }
+        console.log(consoleName, `Conversion output: ${stdout}`);
+        resolve();
+      });
     });
   });
 }
+
+// async function solveLevelMeta(pathArray) {
+//   let worldMatrix = [];
+//   //check if pathArray is empty
+//   if (pathArray.length === 0) {
+//     console.log("\x1b[31m", "No paths found.", "\x1b[0m");
+//     return [];
+//   }
+
+//   // Convert LevelMeta.sav to LevelMeta.sav.json for all paths first
+//   for (const path of pathArray) {
+//     const levelMetaPath = path + "\\LevelMeta.sav";
+//     ConvertSavJson(levelMetaPath); // Assuming this can be promisified or is already async
+//   }
+
+//   // Read and parse the JSON files
+//   for (const path of pathArray) {
+//     const levelMetaJSONPath = path + "\\LevelMeta.sav.json";
+//     try {
+//       const data = await fs.readFile(levelMetaJSONPath, "utf8");
+//       const json = JSON.parse(data);
+//       const worldName = json.properties.SaveData.value.WorldName.value;
+//       worldMatrix.push([path, worldName]);
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   }
+
+//   return worldMatrix;
+// }
+
+// function ConvertSavJson(filePath) {
+//   // Check if the file exists before attempting to execute the script
+//   fs.access(filePath, fs.constants.F_OK, (err) => {
+//     if (err) {
+//       // console.error(
+//       //   "\x1b[33m",
+//       //   `File not found: ${filePath}`,
+//       //   " skipping...",
+//       //   "\x1b[0m"
+//       // );
+//       return; // Exit if the file does not exist
+//     }
+
+//     // File exists, proceed to execute the command
+//     const command = `python palworld_save_tools/convert.py "${filePath}"`;
+
+//     exec(command, (error, stdout, stderr) => {
+//       if (error) {
+//         // console.error(`Error: ${error.message}`);
+//         return;
+//       }
+//       if (stderr) {
+//         // console.error(`Stderr: ${stderr}`);
+//         return;
+//       }
+//       // console.log(`Output: ${stdout}`);
+//     });
+//   });
+// }
 
 ///////////////////////////////////////////////////
 
 // DEBUG
 
 ///////////////////////////////////////////////////
-
-// solveLevelMeta(
-//   getPathsOfFileInFirstLevelDirs(serverDefaultWorldPath, "LevelMeta.sav")
-// ).then((worldMatrix) => {
-//   console.log(worldMatrix);
-// });
-// solveLevelMeta(
-//   getPathsOfFileInFirstLevelDirs(clientDefaultWorldPath, "LevelMeta.sav")
-// ).then((worldMatrix) => {
-//   console.log("\x1b[34m", "\x1b[5m", worldMatrix, "\x1b[0m");
-// });
 
 ///////////////////////////////////////////////////
 
@@ -327,17 +243,7 @@ function palworldSaveToolsConvert(filePath) {
 ///////////////////////////////////////////////////
 
 module.exports = {
-  getClientWorldPath,
-  getServerWorldPath,
-  getClientDirectorySaveFolders,
-  getServerDirectorySaveFolders,
-  setClientWorldPath,
   setPalServerWorldsPath,
-  clientWorldPath,
-  listFiles,
-  readFile,
-  checkServerWorldFolders,
-  doesServerDirectoryExist,
-  checkClientWorldFolders,
-  doesClientDirectoryExist,
+  getPalServerWorldPath,
+  getPalServerWorldMatrix,
 };

@@ -14,6 +14,7 @@ const vdf = require("vdf-parser");
 
 ///////////////////////////////////////////////////
 let steamPath = "C:\\Program Files (x86)\\Steam";
+let currentSteamUserID = "";
 let steamUsers = [];
 
 ///////////////////////////////////////////////////
@@ -30,6 +31,11 @@ function consoleErrorPrint(error) {
 // FUNCTIONS
 
 ///////////////////////////////////////////////////
+function setSteamUser(steamId) {
+  console.log(consoleName, "Setting Steam user...");
+  currentSteamUserID = steamId;
+  console.log(consoleName, "Success!");
+}
 
 function setSteamPath(path) {
   if (isSteamPathValid(path)) {
@@ -101,4 +107,5 @@ module.exports = {
   getSteamUsers,
   setSteamPath,
   steamPath,
+  setSteamUser,
 };

@@ -9,6 +9,7 @@ const originalFs = require("fs");
 const fs = originalFs.promises;
 const fileManager = require("./fileManager");
 const steamUtils = require("./steamUtils");
+const { get } = require("http");
 
 const app = express();
 const port = 3000;
@@ -58,9 +59,11 @@ app.get("/", (req, res) => {
 app.post("/api/steam-directory-path", async (req, res) => {
   console.log(consoleName, "Received path. Sending it to steamUtils.");
   let users = [];
+
   if (steamUtils.setSteamPath(req.body.path)) {
     users = await steamUtils.getSteamUsers(req.body.path);
   }
+  fileManager.setPalServerWorldsPath(req.body.path);
 
   res.send({
     //send back to main.js
@@ -71,9 +74,12 @@ app.post("/api/steam-directory-path", async (req, res) => {
 });
 
 app.post("/api/steam-user", async (req, res) => {
-  console.log(consoleName, "Received user. Sending it to FileManager.");
-  fileManager.setPalServerWorldsPath(
-    steamUtils.steamPath,
-    req.body.selectedUser
-  );
+  console.log(consoleName, "Received user. ");
+  let worlds = [];
+  steamUtils.setSteamUser(req.body.selectedUser);
+  worlds = await fileManager.getPalServerWorldMatrix();
+  res.send({
+    status: "Steam user is ready to go!",
+    worlds: worlds,
+  });
 });

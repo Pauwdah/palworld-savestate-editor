@@ -28,34 +28,55 @@ function setupDirSelectListeners() {
     updateSteamUserDropdown(users);
     console.log(consoleName, "Received users!", users);
   });
+  ipcRenderer.on("pal-server-worlds", (event, worlds) => {
+    console.log(consoleName, "Recieved Server Worlds", worlds);
+    updateServerWorldDropdown(worlds);
+  });
   //SteamStatus
   ipcRenderer.on("steam-user-status", (event, success) => {
     const status = document.getElementById("steamUserStatus");
-    status.innerHTML = "";
+    const pathStatus = document.getElementById("steamPathStatus");
+
+    status.innerHTML = "❓";
+    pathStatus.innerHTML = "❓";
 
     if (success) {
-      // status.classList.add("status-positive");
-      // status.innerHTML = "Steam is ready to go!";
-      status.innerHTML = "✔️";
+      document
+        .getElementById("confirmSteamUser")
+        .addEventListener("click", () => {
+          status.innerHTML = "✔️";
+        });
+      pathStatus.innerHTML = "✔️";
     } else {
       status.innerHTML = "❌";
+      pathStatus.innerHTML = "❌";
     }
   });
 }
 
 function updateSteamUserDropdown(users) {
   const dropdown = document.getElementById("steamUserDropdown");
-  // Clear existing options
-  dropdown.innerHTML = "";
 
-  // Parse the JSON string back to an array
+  dropdown.innerHTML = "";
   const usersArray = JSON.parse(users);
 
-  // Populate the dropdown with new options
   usersArray.forEach((user) => {
     const option = document.createElement("option");
     option.textContent = user[1]; // user[1] should be the name
     option.value = user[0]; // user[0] should be the ID
+    dropdown.appendChild(option);
+  });
+}
+function updateServerWorldDropdown(worlds) {
+  const dropdown = document.getElementById("serverWorldDropdown");
+
+  dropdown.innerHTML = "";
+  const worldsArray = JSON.parse(worlds);
+
+  worldsArray.forEach((world) => {
+    const option = document.createElement("option");
+    option.textContent = world[1]; // user[1] should be the name
+    option.value = world[0]; // user[0] should be the ID
     dropdown.appendChild(option);
   });
 }

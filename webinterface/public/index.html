@@ -11,38 +11,45 @@
     <div id="contentContainer">
       <div id="directorySelectionSection">
         <h2>Setup</h2>
-        <h3>Steam</h3>
-        <div id="steamDirStatus"></div>
-        <button id="selectSteamDir">Select Steam Directory</button>
-        <h5>User:</h5>
-        <div class="select-confirm-div">
-          <select name="steamUserDropdown" id="steamUserDropdown">
-            <option value="default">No User found. Is the path right?</option>
-          </select>
-          <div class="status-icon" id="steamUserStatus">❌</div>
-          <button id="confirmSteamUser">Confirm</button>
-        </div>
 
-        <div class="select-confirm-div">
-          <select name="serverWorldDropdown" id="serverWorldDropdown">
-            <option value="default">No worlds found.</option>
-          </select>
-          <div class="status-icon" id="serverWorldStatus">❌</div>
-          <button id="confirmServerWorld">Confirm</button>
+        <div class="flex-box">
+          <button id="selectSteamDir">Select Steam Directory</button>
+          <div class="status-icon" id="steamPathStatus">❓</div>
+        </div>
+        <div class="flex-box">
+          <button id="selectClientDir">Select Local Directory</button>
+          <div class="status-icon" id="clientPathStatus">❓</div>
         </div>
 
         <br />
 
-        <h4>Local save directory</h4>
-        <button id="selectClientDir">Select Client Directory</button>
-
-        <div class="select-confirm-div">
-          <select name="clientSavestateFolders" id="clientSavestateFolders">
-            <option value="default">No Savestates Found</option>
+        <h4>Local Worlds</h4>
+        <h5>User:</h5>
+        <div class="flex-box">
+          <select name="steamUserDropdown" id="steamUserDropdown">
+            <option value="default">No accounts found</option>
           </select>
-          <div class="status-icon" id="serverWorldStatus">❌</div>
+
+          <button id="confirmSteamUser">Confirm</button>
+          <div class="status-icon" id="steamUserStatus">❓</div>
+        </div>
+
+        <div class="flex-box">
+          <select name="clientSavestateFolders" id="clientSavestateFolders">
+            <option value="default">No worlds found</option>
+          </select>
 
           <button id="confirmClientSavestate">Confirm</button>
+          <div class="status-icon" id="">❓</div>
+        </div>
+        <h4>Server Worlds</h4>
+        <div class="flex-box">
+          <select name="serverWorldDropdown" id="serverWorldDropdown">
+            <option value="default">No worlds found</option>
+          </select>
+
+          <button id="confirmServerWorld">Confirm</button>
+          <div class="status-icon" id="serverWorldStatus">❓</div>
         </div>
       </div>
       <div id="worldEditorSection">

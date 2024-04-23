@@ -6,7 +6,7 @@ Editor that builds on palworld save tools for simple editing of savefiles.
 
 ## Instructions
 
-Open the `start_webinterface.bat` to open the App.
+Open the `START.bat` to open the App.
 
 > [!CAUTION]
 > Don't close the command promt that opens with it, or you end the whole software.
