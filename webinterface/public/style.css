@@ -24,6 +24,11 @@ body {
   padding: 20px;
 }
 
+@font-face {
+  font-family: Arrow7;
+  src: url(./font/Arrow7-30dG.ttf);
+}
+
 /* Header Styles */
 h1,
 h2,
@@ -197,4 +202,57 @@ textarea {
 .status-icon {
   margin-right: 10px;
   margin-left: 10px;
+}
+.data-transfer-row-entry-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.data-transfer-row-control {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  height: 2.5em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+.world-data-input-field {
+  border: none;
+  padding: 10px;
+  flex-grow: 1; /* Allows input to take up available space */
+}
+
+.data-transfer-button {
+  /* font-family: "Arrow7", sans-serif; */
+
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-bottom: 0.5em;
+  font-size: 1.6em;
+  background: #0084ff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 0;
+  flex-grow: 1;
+}
+#dataTransferHeading {
+  justify-content: space-between;
+}
+#dataTransferRows {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  min-width: 100%;
+  min-height: 100%;
+  max-height: 650px;
+  overflow-y: scroll;
+  padding: 0.2em;
 }

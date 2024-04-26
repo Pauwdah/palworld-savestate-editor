@@ -42,20 +42,14 @@ app.listen(port, () => {
 });
 
 ///////////////////////////////////////////////////
-
-// APP GET (SERVER OUTPUT/SENDING DATA TO CLIENT)
-
+// EXPRESS SERVER <--AXIOS--> ELECTRON
 ///////////////////////////////////////////////////
+// App Get (SERVER OUTPUT/SENDING DATA TO CLIENT)
 app.get("/", (req, res) => {
   res.sendFile("index.html", { root: "./webinterface/public" });
 });
 
-///////////////////////////////////////////////////
-
-// APP POST (SERVER INPUT/RECEIVING DATA FROM CLIENT)
-
-///////////////////////////////////////////////////
-
+// App Post (SERVER INPUT/RECEIVING DATA FROM CLIENT)
 app.post("/api/steam-directory-path", async (req, res) => {
   console.log(consoleName, "Received path. Sending it to steamUtils.");
   let users = [];
@@ -66,20 +60,24 @@ app.post("/api/steam-directory-path", async (req, res) => {
   fileManager.setPalServerWorldsPath(req.body.path);
 
   res.send({
-    //send back to main.js
     status: " Steam is ready to go!",
     path: req.body.path,
     users: users,
   });
 });
-
+//save selected user, get worlds & save them, send them back client
 app.post("/api/steam-user", async (req, res) => {
   console.log(consoleName, "Received user. ");
-  let worlds = [];
   steamUtils.setSteamUser(req.body.selectedUser);
-  worlds = await fileManager.getPalServerWorldMatrix();
+
+  let serverSaveStates = [];
+  serverSaveStates = await fileManager.getPalServerWorldMatrix();
+  let localSaveStates = [];
+  localSaveStates = await fileManager.getLocalWorldMatrix(); // function doesn exisit yet
   res.send({
     status: "Steam user is ready to go!",
-    worlds: worlds,
+    user: req.body.selectedUser,
+    serverSaveStates: serverSaveStates,
+    localSaveStates: localSaveStates,
   });
 });

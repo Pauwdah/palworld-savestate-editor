@@ -12,39 +12,40 @@
       <div id="directorySelectionSection">
         <h2>Setup</h2>
 
+        <button id="autoSetup">✨Auto Setup✨</button>
+
         <div class="flex-box">
           <button id="selectSteamDir">Select Steam Directory</button>
           <div class="status-icon" id="steamPathStatus">❓</div>
         </div>
-        <div class="flex-box">
-          <button id="selectClientDir">Select Local Directory</button>
-          <div class="status-icon" id="clientPathStatus">❓</div>
-        </div>
-
-        <br />
-
-        <h4>Local Worlds</h4>
         <h5>User:</h5>
         <div class="flex-box">
           <select name="steamUserDropdown" id="steamUserDropdown">
             <option value="default">No accounts found</option>
           </select>
-
           <button id="confirmSteamUser">Confirm</button>
           <div class="status-icon" id="steamUserStatus">❓</div>
         </div>
+        <div class="flex-box">
+          <button id="selectlocalDir">Select Local Directory</button>
+          <div class="status-icon" id="localPathStatus">❓</div>
+        </div>
+
+        <br />
+
+        <h4>Local World</h4>
 
         <div class="flex-box">
-          <select name="clientSavestateFolders" id="clientSavestateFolders">
+          <select name="localSaveStateDropdown" id="localSaveStateDropdown">
             <option value="default">No worlds found</option>
           </select>
 
           <button id="confirmClientSavestate">Confirm</button>
           <div class="status-icon" id="">❓</div>
         </div>
-        <h4>Server Worlds</h4>
+        <h4>Server World</h4>
         <div class="flex-box">
-          <select name="serverWorldDropdown" id="serverWorldDropdown">
+          <select name="serverSaveStateDropdown" id="serverSaveStateDropdown">
             <option value="default">No worlds found</option>
           </select>
 
@@ -52,8 +53,390 @@
           <div class="status-icon" id="serverWorldStatus">❓</div>
         </div>
       </div>
-      <div id="worldEditorSection">
+
+      <div class="" id="worldEditorSection">
         <h2>World Editor</h2>
+        <div id="dataTransferHeading" class="flex-box">
+          <h3 id="dataTransferHeadingLeft">Local World</h3>
+          <h3 id="dataTransferHeadingRight">Server World</h3>
+        </div>
+        <div class="flex-box">
+          <button>Transfer ALL DATA To Server 🡆🡆</button>
+          <button>🡄🡄 Transfer ALL DATA to local</button>
+        </div>
+        <div class="flex-box">
+          <select name="localDataFileSelect" id="localDataFileSelect"></select>
+          <select
+            name="serverDataFileSelect"
+            id="serverDataFileSelect"
+          ></select>
+        </div>
+        <div class="flex-box">
+          <button>Transfer File To Server 🡆🡆</button>
+          <button>🡄🡄 Transfer File To Local</button>
+        </div>
+        <div id="dataTransferRows">
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+          <div class="data-transfer-row">
+            <h5 class="data-transfer-row-entry-header">Entry</h5>
+            <div class="data-transfer-row-control" id="dataTransferRow_1">
+              <input
+                class="world-data-input-field local-world-data-input-field"
+                type="text"
+              />
+              <button
+                class="data-transfer-button data-transfer-button-to-server"
+              >
+                🡆
+              </button>
+              <button
+                class="data-transfer-button data-transfer-button-to-local"
+              >
+                🡄
+              </button>
+              <input
+                class="world-data-input-field server-world-data-input-field"
+                type="text"
+              />
+            </div>
+            <hr />
+          </div>
+        </div>
       </div>
     </div>
     <script src="renderer.js"></script>

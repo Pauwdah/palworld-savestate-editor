@@ -31,10 +31,16 @@ function consoleErrorPrint(error) {
 // FUNCTIONS
 
 ///////////////////////////////////////////////////
+function getSteamPath() {
+  return steamPath;
+}
 function setSteamUser(steamId) {
   console.log(consoleName, "Setting Steam user...");
   currentSteamUserID = steamId;
   console.log(consoleName, "Success!");
+}
+function getSteamUser() {
+  return currentSteamUserID;
 }
 
 function setSteamPath(path) {
@@ -105,6 +111,8 @@ async function getSteamUsers(path) {
 
 module.exports = {
   getSteamUsers,
+  getSteamUser,
+  getSteamPath,
   setSteamPath,
   steamPath,
   setSteamUser,

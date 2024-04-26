@@ -2,14 +2,20 @@
 
 # _Not usable yet_
 
-Editor that builds on palworld save tools for simple editing of savefiles.
+Editor that builds on [palworld-save-tools](https://github.com/cheahjs/palworld-save-tools) for simple editing of savefiles.
 
 ## Instructions
 
-Open the `START.bat` to open the App.
+Open the `START.cmd` to open the App.
+This .cmd is checking for required dependencies and installes them if necessary, then starts the app.
+If you wanna skip the check open `START_skipDependencyCheck.cmd` instead.
 
 > [!CAUTION]
-> Don't close the command promt that opens with it, or you end the whole software.
+> Don't close the console window that opens with it, or you end the whole software.
+
+> [!NOTE]
+> There are also other dependencies that dont get checked directly.
+> Those dependencies are: Installation of PalServer
 
 # palworld-save-tools
 

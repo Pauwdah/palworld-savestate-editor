@@ -83,10 +83,28 @@ app.on("activate", () => {
 });
 
 ///////////////////////////////////////////////////
-
-// IPC LISTENERS
-
+// MAIN PROCESS <--AXIOS--> EXPRESS SERVER
 ///////////////////////////////////////////////////
+ipcMain.on("auto-setup", (event) => {
+  console.log(consoleName, "Attempting to send path to server...");
+  if (fs.existsSync(steamUtils.getSteamPath())) {
+    handleSteamDir(steamUtils.getSteamPath(), "/api/steam-directory-path")
+      .then((users) => {
+        // Send back to the renderer
+        event.reply("steam-users", users);
+        event.reply("steam-user-status", true);
+      })
+      .catch((err) => {
+        console.error("Failed to handle steam directory:", err);
+        event.reply("steam-users", JSON.stringify([])); // Send an empty array for consistency
+        event.reply("steam-user-status", false);
+      });
+  } else {
+    throw new Error("Steam not found at default path.");
+  }
+  if (fs.existsSync()) {
+  }
+});
 
 ipcMain.on("select-steam-directory", (event) => {
   dialog
@@ -99,7 +117,7 @@ ipcMain.on("select-steam-directory", (event) => {
         handleSteamDir(result.filePaths[0], "/api/steam-directory-path")
           .then((users) => {
             // Send back to the renderer
-            users = JSON.stringify(users);
+
             event.reply("steam-users", users);
             event.reply("steam-user-status", true);
           })
@@ -108,6 +126,8 @@ ipcMain.on("select-steam-directory", (event) => {
             event.reply("steam-users", JSON.stringify([])); // Send an empty array for consistency
             event.reply("steam-user-status", false);
           });
+
+        //here handle local directory
       } else {
         // Handle the case where the user cancels the dialog or selects no directory
         event.reply("steam-users", JSON.stringify([]));
@@ -127,7 +147,11 @@ ipcMain.on("select-steam-user", (event, selectedUser) => {
   axios
     .post("http://localhost:3000/api/steam-user", { selectedUser })
     .then((response) => {
-      console.log(consoleName, response.data);
+      event.reply(
+        "worlds",
+        response.data.serverSaveStates,
+        response.data.localSaveStates
+      );
     })
     .catch((error) => {
       console.error("Error sending selected user to server:", error);
@@ -135,12 +159,12 @@ ipcMain.on("select-steam-user", (event, selectedUser) => {
 });
 
 ///////////////////////////////////////////////////
-
 // FUNCTIONS
-
 ///////////////////////////////////////////////////
 
 function handleSteamDir(folderPath, apiPath) {
+  //add check if path is valid
+
   return axios
     .post(`http://localhost:3000${apiPath}`, { path: folderPath })
     .then((response) => {
