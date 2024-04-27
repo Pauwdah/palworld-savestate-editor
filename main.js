@@ -8,6 +8,8 @@ const { fork } = require("child_process");
 const axios = require("axios"); // Import axios
 const path = require("path");
 const fs = require("fs");
+const steamUtils = require("./webinterface/steamUtils");
+// const renderer = require("./webinterface/public/renderer");
 
 ///////////////////////////////////////////////////
 
@@ -117,9 +119,7 @@ ipcMain.on("select-steam-directory", (event) => {
         handleSteamDir(result.filePaths[0], "/api/steam-directory-path")
           .then((users) => {
             // Send back to the renderer
-
-            event.reply("steam-users", users);
-            event.reply("steam-user-status", true);
+            event.reply("steam-users", users, true);
           })
           .catch((err) => {
             console.error("Failed to handle steam directory:", err);
@@ -155,6 +155,26 @@ ipcMain.on("select-steam-user", (event, selectedUser) => {
     })
     .catch((error) => {
       console.error("Error sending selected user to server:", error);
+    });
+});
+
+ipcMain.on("select-client-world", (event, selectedWorld) => {
+  console.log(consoleName, "Sending World: ", selectedWorld);
+  event.reply("update-loading-bar", "clientWorldLoadingBar", 50);
+
+  axios
+    .post("http://localhost:3000/api/client-world", { selectedWorld })
+    .then((response) => {
+      event.reply("client-world", true);
+      event.reply("update-loading-bar", "clientWorldLoadingBar", 0);
+    })
+    .catch((error) => {
+      event.reply("client-world", false);
+      event.reply("update-loading-bar", "clientWorldLoadingBar", 0);
+      consoleErrorPrint(
+        "Error sending selected world to server:",
+        selectedWorld
+      );
     });
 });
 

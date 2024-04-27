@@ -1,4 +1,4 @@
-# palworld savestate editor
+# palworld-savestate-editor
 
 # _Not usable yet_
 
@@ -7,15 +7,29 @@ Editor that builds on [palworld-save-tools](https://github.com/cheahjs/palworld-
 ## Instructions
 
 Open the `START.cmd` to open the App.
-This .cmd is checking for required dependencies and installes them if necessary, then starts the app.
+This is checking for required dependencies and installs them if necessary, then starts the app. \
 If you wanna skip the check open `START_skipDependencyCheck.cmd` instead.
-
-> [!CAUTION]
-> Don't close the console window that opens with it, or you end the whole software.
 
 > [!NOTE]
 > There are also other dependencies that dont get checked directly.
 > Those dependencies are: Installation of PalServer
+
+> [!IMPORTANT]
+>
+> 1. Converting save states will result in very large files, may require significant amounts of RAM to process, and can take some time to finish.
+> 2. Don't close the console window that opens with it, or you end the whole software.
+
+### Usage
+
+> [!TIP]
+> Click ✨ Button for finding Steam.
+> (only works if Steam is installed at default location `C:\Program Files (x86)\Steam`)
+
+1. Select your Steam installation directory.
+2. Select the Steam User from whom you want the save states.
+3. Select the Local World you want to use. Convert Local World.
+4. (optional) Select Server World. (Only applies if you have manual backups in the same folder)
+5. WIP...
 
 # palworld-save-tools
 

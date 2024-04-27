@@ -177,7 +177,7 @@ textarea {
   align-items: start; /* Aligns items to the top */
 }
 
-#directorySelectionSection {
+#setupSection {
   flex: 35%; /* This section will take up 30% of the total width */
   padding: 20px; /* Optional: Adds some space inside this section */
 }
@@ -185,6 +185,24 @@ textarea {
 #worldEditorSection {
   flex: 65%; /* This section will take up 70% of the total width */
   padding: 20px; /* Optional: Adds some space inside this section */
+}
+#selectSteamDir {
+  flex: 75%;
+  min-height: 2.6em;
+  margin-right: 0;
+}
+#autoSetup {
+  flex: 20%;
+  min-height: 2.6em;
+}
+.setupDropdown {
+  flex: 75%;
+}
+.setupButton {
+  flex: 20%;
+}
+.setupStatusBox {
+  flex: 5%;
 }
 
 .status-positive {
@@ -200,13 +218,21 @@ textarea {
   align-items: center;
 }
 .status-icon {
-  margin-right: 10px;
-  margin-left: 10px;
+  display: flex;
+  /* center the icon */
+  justify-content: center;
+  transition: transform 2s;
+
+  min-width: 2.6em;
+  /* margin-right: 10px;
+  margin-left: 10px; */
 }
 .data-transfer-row-entry-header {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  height: 100%;
   margin: 0;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -244,7 +270,7 @@ textarea {
   flex-basis: 0;
   flex-grow: 1;
 }
-#dataTransferHeading {
+.dataTransferHeading {
   justify-content: space-between;
 }
 #dataTransferRows {
@@ -255,4 +281,11 @@ textarea {
   max-height: 650px;
   overflow-y: scroll;
   padding: 0.2em;
+}
+.loadingBar {
+  transition: width 0.5s ease;
+  height: 20px;
+  background-color: #4caf50;
+  width: 0%; /* Initial state of the loading bar */
+  border-radius: 5px;
 }

@@ -60,7 +60,7 @@ app.post("/api/steam-directory-path", async (req, res) => {
   fileManager.setPalServerWorldsPath(req.body.path);
 
   res.send({
-    status: " Steam is ready to go!",
+    status: "Steam is ready to go!",
     path: req.body.path,
     users: users,
   });
@@ -73,11 +73,41 @@ app.post("/api/steam-user", async (req, res) => {
   let serverSaveStates = [];
   serverSaveStates = await fileManager.getPalServerWorldMatrix();
   let localSaveStates = [];
-  localSaveStates = await fileManager.getLocalWorldMatrix(); // function doesn exisit yet
+  localSaveStates = await fileManager.getLocalWorldMatrix();
   res.send({
     status: "Steam user is ready to go!",
     user: req.body.selectedUser,
     serverSaveStates: serverSaveStates,
     localSaveStates: localSaveStates,
+  });
+});
+
+app.post("/api/client-world", async (req, res) => {
+  ///convert the selected world to json
+  //convert level/world
+  //convert palyers
+  //check if selected world is valid
+  console.log(consoleName, "Received world: ", req.body.selectedWorld);
+  if (req.body.selectedWorld === "default") {
+    consoleErrorPrint("No world selected.");
+    res.send({
+      status: "No world selected.",
+    });
+    return;
+  }
+
+  //Convert ALL files to JSON
+  const clientWorld = req.body.selectedWorld + "/Level.sav";
+  await fileManager.convertSavToJson(clientWorld);
+  const playerFolder = req.body.selectedWorld + "/Players";
+  await fileManager.convertPlayerSaveStatesToJson(playerFolder);
+
+  //create and get the player indentifiers and send them back
+
+  console.log(consoleName, "Converted all player files to JSON.");
+
+  res.send({
+    status: "Client world is ready to go!",
+    world: clientWorld,
   });
 });

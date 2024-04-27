@@ -1,7 +1,5 @@
 ///////////////////////////////////////////////////
-
 // IMPORTS
-
 ///////////////////////////////////////////////////
 const originalFs = require("fs");
 const fs = originalFs.promises;
@@ -12,9 +10,7 @@ const { exec } = require("child_process");
 const steamIdUtils = require("./steamUtils");
 
 ///////////////////////////////////////////////////
-
 // VARIABLES
-
 ///////////////////////////////////////////////////
 //defualt path starts at %localappdata%\Pal\Saved\SaveGames
 let localSaveStatesPath =
@@ -54,6 +50,7 @@ async function getLocalWorldMatrix() {
   localWorldMatrix = await solveLocalWorldMeta(localSaveStatesPathArray);
   return localWorldMatrix;
 }
+
 async function solveLocalWorldMeta(pathArrayOfLocalSaveStates) {
   let worldMatrix = [];
   if (pathArrayOfLocalSaveStates.length === 0) {
@@ -64,7 +61,7 @@ async function solveLocalWorldMeta(pathArrayOfLocalSaveStates) {
   // Convert all files first
   const conversionPromises = pathArrayOfLocalSaveStates.map((path) => {
     const levelMetaPath = path + "\\LevelMeta.sav";
-    return ConvertSavJson(levelMetaPath);
+    return convertSavJson(levelMetaPath);
   });
 
   // Wait for all conversions to complete
@@ -124,23 +121,19 @@ async function solveServerWorldMeta(pathsOfServerSaveStates) {
     return [];
   }
 
-  // Convert all files first
   const conversionPromises = pathsOfServerSaveStates.map((path) => {
     const levelMetaPath = path + "\\LevelMeta.sav";
-    return ConvertSavJson(levelMetaPath);
+    return convertSavJson(levelMetaPath);
   });
 
-  // Wait for all conversions to complete
   await Promise.all(conversionPromises);
 
-  // Now proceed with reading and parsing JSON files
   for (const path of pathsOfServerSaveStates) {
     const levelMetaJSONPath = path + "\\LevelMeta.sav.json";
     try {
       const data = await fs.readFile(levelMetaJSONPath, "utf8");
       const json = JSON.parse(data);
       const timeTicks = json.properties.Timestamp.value;
-      //add conversion from .NET's DateTime.Ticks to JS Date
       const savedTime = convertTicksToDateTime(timeTicks);
       worldMatrix.push([path, savedTime]);
     } catch (err) {
@@ -157,8 +150,6 @@ async function solveServerWorldMeta(pathsOfServerSaveStates) {
 
 function getPathsOfFileInFirstLevelDirs(directoryPath, fileName) {
   let pathsWithFile = [];
-
-  // Check if the current path exists and is a directory
   if (
     originalFs.existsSync(directoryPath) &&
     originalFs.statSync(directoryPath).isDirectory()
@@ -191,7 +182,66 @@ function getPathsOfFileInFirstLevelDirs(directoryPath, fileName) {
   }
 }
 
+function convertPlayerSaveStatesToJson(pathToPlayerSavFolder) {
+  //takes in a folder path pathToPlayerSavFolder
+  //gets all files of type .sav in that folder
+  //converts them to json with convertSavToJson(pathToFile)
+  //returns an array of paths to the json files
+  console.log(consoleName, `Converting player save states to JSON...`);
+  return new Promise((resolve, reject) => {
+    fs.readdir(pathToPlayerSavFolder, (err, files) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const jsonFiles = files
+        .filter((file) => file.endsWith(".sav")) // Filter to get only .sav files
+        .map((file) => path.join(pathToPlayerSavFolder, file)) // Create full path
+        .map(convertSavToJson); // Convert each .sav file to .json
+
+      resolve(jsonFiles);
+    });
+  });
+}
+function getPlayerSaveStateMatrix(pathArray) {
+  //takes in an array of paths to player save states in json format
+  //then reads and parses the json files
+  //returns for each savestate teh path + the name of the player for frontend identification
+  let playerSaveStateMatrix = [];
+  for (const path of pathArray) {
+    const playerSaveState = parseJsonFile(path);
+    playerSaveStateMatrix.push([path, playerSaveState]);
+  }
+  return playerSaveStateMatrix;
+}
+
+function getJsonAsArray(json) {
+  let jsonArray = [];
+  for (const key in json) {
+    jsonArray.push([key, json[key]]);
+  }
+  return jsonArray;
+}
+function parseJsonFile(filePath) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, "utf8")
+      .then((data) => {
+        const json = JSON.parse(data);
+        resolve(json);
+      })
+      .catch((err) => {
+        console.error(consoleName, `Error reading or parsing JSON: ${err}`);
+        reject(err);
+      });
+  });
+}
+
+///////////////////////////////////////////////////
+// CONVERSION FUNCTIONS
+///////////////////////////////////////////////////
 function convertTicksToDateTime(ticks) {
+  //Convert .NET's DateTime.Ticks to JS Date
   const baseDate = new Date("0001-01-01T00:00:00Z");
   const milliseconds = ticks / 10000;
   const date = new Date(baseDate.getTime() + milliseconds);
@@ -202,7 +252,6 @@ function convertTicksToDateTime(ticks) {
     "-" +
     date.getUTCDate().toString().padStart(2, "0");
 
-  // Create a time string in the format "HH:MM:SS"
   const timeString =
     date.getUTCHours().toString().padStart(2, "0") +
     ":" +
@@ -213,13 +262,9 @@ function convertTicksToDateTime(ticks) {
   return dateString + " " + timeString;
 }
 
-// Example usage
-const ticks = 638497340614460000;
-console.log(convertTicksToDateTime(ticks));
-
-function ConvertSavJson(filePath) {
+function convertSavJson(pathToFile) {
   return new Promise((resolve, reject) => {
-    const command = `python palworld_save_tools/convert.py "${filePath}" --force`;
+    const command = `python palworld_save_tools/convert.py "${pathToFile}" --force`;
     console.log(consoleName, `Executing command: ${command}`);
 
     const process = exec(command, (error, stdout, stderr) => {
@@ -238,9 +283,19 @@ function ConvertSavJson(filePath) {
       resolve(stdout); // resolve with stdout to debug output if necessary
     });
 
-    // To handle cases where the Python script might be waiting for input:
     process.stdin.end();
   });
+}
+
+async function convertSavToJson(pathToFile) {
+  await convertSavJson(pathToFile);
+  const levelSavJsonPath = pathToFile + ".json";
+  return levelSavJsonPath;
+}
+async function convertJsonToSav(pathToFile) {
+  await convertSavJson(levelSavJsonPath);
+  const levelSavPath = pathToFile.replace(".json", "");
+  return levelSavPath;
 }
 
 ///////////////////////////////////////////////////
@@ -260,4 +315,7 @@ module.exports = {
   getPalServerWorldPath,
   getPalServerWorldMatrix,
   getLocalWorldMatrix,
+  convertPlayerSaveStatesToJson,
+  convertSavToJson,
+  convertJsonToSav,
 };
