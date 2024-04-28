@@ -1,3 +1,20 @@
+:root[data-theme="light"] {
+  --text: #0c1618;
+  --background: #f9fbfb;
+  --primary: #43b9d0;
+  --secondary: #bd8de2;
+  --accent: #6951a9;
+}
+:root[data-theme="dark"] {
+  --text: #e7f1f3;
+  --background: #040606;
+  --primary: #2fa4bc;
+  --secondary: #4d1d72;
+  --accent: #6e56ae;
+}
+
+
+
 /* Reset some basic elements */
 body,
 h1,
@@ -15,11 +32,12 @@ figcaption {
 
 /* Basic styling */
 body {
-  font-family: "Arial", sans-serif; /* You can change the font family */
+  font-family: "Arial", sans-serif; /* You can cFhange the font family */
   line-height: 0;
   font-size: 16px; /* Default text size */
-  color: #333; /* Default text color */
-  background-color: #f4f4f4; /* Background color of the body */
+  color: var(--text); /* Default text color */
+  background-color: var(--background);
+  /* background-color: #f4f4f4; Background color of the body */
   margin: 0;
   padding: 20px;
 }
@@ -33,7 +51,7 @@ body {
 h1,
 h2,
 h3 {
-  color: #333;
+  color: var(--text);
   margin-bottom: 20px;
 }
 h1,
@@ -42,7 +60,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #444;
+  color: var(--text);
   margin-bottom: 10px;
 }
 
@@ -87,11 +105,11 @@ a:hover {
 button,
 input[type="submit"],
 input[type="button"] {
-  background-color: #007bff;
+  background-color: var(--primary);
   width: 100%;
   margin: 0.2em;
   border: none;
-  color: white;
+  color: var(--button-text);
   padding: 10px 20px;
   cursor: pointer;
   font-size: 1em;
@@ -101,7 +119,6 @@ input[type="button"] {
 button:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover {
-  background-color: #0056b3;
 }
 
 /* Form Element Styles */
@@ -260,9 +277,9 @@ textarea {
   margin-bottom: 0;
   padding-bottom: 0.5em;
   font-size: 1.6em;
-  background: #0084ff;
+  background: var(--primary);
   border: none;
-  color: white;
+  color: var(--text);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -288,4 +305,24 @@ textarea {
   background-color: #4caf50;
   width: 0%; /* Initial state of the loading bar */
   border-radius: 5px;
+}
+
+#title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#title button{
+  padding: 10px;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 1/1;
+}
+
+#title button img{
+  width: 30px;
+  height: 30px;
 }

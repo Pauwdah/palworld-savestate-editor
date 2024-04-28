@@ -1,106 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Palworld Savestate Editor</title>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palworld Savestate Editor</title>
+  <link rel="stylesheet" href="./style.css" />
+
+</head>
+
+<body>
+  <div id="title">
     <h1>Palworld Savestate Editor</h1>
-    <div id="contentContainer">
-      <div id="setupSection">
-        <h2>Setup</h2>
+    <button id="theme-toggle" type="button" data-theme-toggle aria-label="Toggle theme">
+      <img src="icons/sun.png" alt="Light Mode" id="light-icon" style="display: none;">
+      <img src="icons/moon.png" alt="Dark Mode" id="dark-icon">
+    </button>
+  </div>
 
-        <div class="flex-box">
-          <button id="selectSteamDir">Select Steam Directory</button>
-          <button id="autoSetup" class="setupButton">✨</button>
-          <div class="status-icon setupStatusBox" id="steamPathStatus">❓</div>
-        </div>
-        <h5>Steam User:</h5>
-        <div class="flex-box">
-          <select
-            name="steamUserDropdown"
-            id="steamUserDropdown"
-            class="setupDropdown"
-          >
-            <option value="default">No accounts found</option>
-          </select>
-          <button id="confirmSteamUser" class="setupButton">Set</button>
-          <div class="status-icon setupStatusBox" id="steamUserStatus">❓</div>
-        </div>
-        <div class="flex-box"></div>
+  <div id="contentContainer">
+    <div id="setupSection">
+      <h2>Setup</h2>
 
-        <br />
+      <div class="flex-box">
+        <button id="selectSteamDir">Select Steam Directory</button>
+        <button id="autoSetup" class="setupButton">✨</button>
+        <div class="status-icon setupStatusBox" id="steamPathStatus">❓</div>
+      </div>
+      <h5>Steam User:</h5>
+      <div class="flex-box">
+        <select name="steamUserDropdown" id="steamUserDropdown" class="setupDropdown">
+          <option value="default">No accounts found</option>
+        </select>
+        <button id="confirmSteamUser" class="setupButton">Set</button>
+        <div class="status-icon setupStatusBox" id="steamUserStatus">❓</div>
+      </div>
+      <div class="flex-box"></div>
 
-        <h4>Local World</h4>
+      <br />
 
-        <div class="flex-box">
-          <select
-            name="localSaveStateDropdown"
-            id="localSaveStateDropdown"
-            class="setupDropdown"
-          >
-            <option value="default">No worlds found</option>
-          </select>
+      <h4>Local World</h4>
 
-          <button id="confirmClientSavestate" class="setupButton">
-            Convert
-          </button>
-          <div class="status-icon setupStatusBox" id="clientWorldStatus">
-            ❓
-          </div>
-        </div>
-        <div id="clientWorldLoadingBar" class="loadingBar"></div>
+      <div class="flex-box">
+        <select name="localSaveStateDropdown" id="localSaveStateDropdown" class="setupDropdown">
+          <option value="default">No worlds found</option>
+        </select>
 
-        <h4>Server World</h4>
-        <div class="flex-box">
-          <select
-            name="serverSaveStateDropdown"
-            id="serverSaveStateDropdown"
-            class="setupDropdown"
-          >
-            <option value="default">No worlds found</option>
-          </select>
-
-          <button id="confirmServerWorld" class="setupButton">Convert</button>
-          <div class="status-icon setupStatusBox" id="serverWorldStatus">
-            ❓
-          </div>
+        <button id="confirmClientSavestate" class="setupButton">
+          Convert
+        </button>
+        <div class="status-icon setupStatusBox" id="clientWorldStatus">
+          ❓
         </div>
       </div>
+      <div id="clientWorldLoadingBar" class="loadingBar"></div>
 
-      <div class="" id="worldEditorSection">
-        <h2>World Editor</h2>
-        <div class="dataTransferHeading flex-box">
-          <h3>Local World</h3>
-          <h3>Server World</h3>
-        </div>
-        <div class="flex-box">
-          <button>Transfer ALL DATA To Server 🡆🡆</button>
-          <button>🡄🡄 Transfer ALL DATA to local</button>
-        </div>
+      <h4>Server World</h4>
+      <div class="flex-box">
+        <select name="serverSaveStateDropdown" id="serverSaveStateDropdown" class="setupDropdown">
+          <option value="default">No worlds found</option>
+        </select>
 
-        <div class="dataTransferHeading flex-box">
-          <h5>Player</h5>
-          <h5>Player</h5>
+        <button id="confirmServerWorld" class="setupButton">Convert</button>
+        <div class="status-icon setupStatusBox" id="serverWorldStatus">
+          ❓
         </div>
-
-        <div class="flex-box">
-          <select name="localDataFileSelect" id="localDataFileSelect">
-            <option value="default">No File Loaded</option>
-          </select>
-          <select name="serverDataFileSelect" id="serverDataFileSelect">
-            <option value="default">No File Loaded</option>
-          </select>
-        </div>
-        <div class="flex-box">
-          <button>Transfer File To Server 🡆🡆</button>
-          <button>🡄🡄 Transfer File To Local</button>
-        </div>
-        <div id="dataTransferRows"></div>
       </div>
     </div>
-    <script src="renderer.js"></script>
-  </body>
+
+    <div class="" id="worldEditorSection">
+      <h2>World Editor</h2>
+      <div class="dataTransferHeading flex-box">
+        <h3>Local World</h3>
+        <h3>Server World</h3>
+      </div>
+      <div class="flex-box">
+        <button>Transfer ALL DATA To Server 🡆🡆</button>
+        <button>🡄🡄 Transfer ALL DATA to local</button>
+      </div>
+
+      <div class="dataTransferHeading flex-box">
+        <h5>Player</h5>
+        <h5>Player</h5>
+      </div>
+
+      <div class="flex-box">
+        <select name="localDataFileSelect" id="localDataFileSelect">
+          <option value="default">No File Loaded</option>
+        </select>
+        <select name="serverDataFileSelect" id="serverDataFileSelect">
+          <option value="default">No File Loaded</option>
+        </select>
+      </div>
+      <div class="flex-box">
+        <button>Transfer File To Server 🡆🡆</button>
+        <button>🡄🡄 Transfer File To Local</button>
+      </div>
+      <div id="dataTransferRows"></div>
+    </div>
+  </div>
+  <script src="renderer.js"></script>
+  <script src="theme-selector.js"></script>
+</body>
+
 </html>
